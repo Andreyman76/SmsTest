@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="SmsTest.Contracts/SmsTest.Contracts.csproj" Id="436e7618-4d76-425c-8341-583e114b3d0f" />
+  <Project Path="SmsTest.Server/SmsTest.Server.csproj" Id="77e0542f-bfcd-432f-a7f6-a8735daa7307" />
+</Solution>
