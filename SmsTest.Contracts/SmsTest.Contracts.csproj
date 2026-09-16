@@ -14,6 +14,7 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+		<ProjectReference Include="..\SmsTest.Domain\SmsTest.Domain.csproj" />
 		<Protobuf Include="Protos\sms.test.proto" GrpcServices="Both" />
 	</ItemGroup>
 
