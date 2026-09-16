@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SmsTest.Server.Authentication;
 
-internal sealed class BasicAuthenticationMiddleware(
+internal class BasicAuthenticationMiddleware(
     RequestDelegate next,
     IConfiguration configuration)
 {

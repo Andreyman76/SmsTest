@@ -5,6 +5,7 @@
     <Platform Name="x86" />
   </Configurations>
   <Project Path="SmsTest.Client/SmsTest.Client.csproj" Id="d17705d1-d721-4353-a040-79fa3eae6ad2" />
+  <Project Path="SmsTest.ConsoleApp/SmsTest.ConsoleApp.csproj" Id="193da891-29e6-4386-a182-ab67966797ab" />
   <Project Path="SmsTest.Contracts/SmsTest.Contracts.csproj" Id="436e7618-4d76-425c-8341-583e114b3d0f" />
   <Project Path="SmsTest.Domain/SmsTest.Domain.csproj" Id="bd447e83-ed3a-42a5-a1d4-b49311f69297" />
   <Project Path="SmsTest.Server/SmsTest.Server.csproj" Id="77e0542f-bfcd-432f-a7f6-a8735daa7307" />

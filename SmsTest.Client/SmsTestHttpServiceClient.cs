@@ -2,40 +2,25 @@
 using SmsTest.Contracts.Http;
 using SmsTest.Domain;
 using SmsTest.Domain.DTO;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
+using System.Text.Json;
 
 namespace SmsTest.Client;
 
-public class SmsTestHttpServiceClient : ISmsTestServiceClient, IDisposable
+public class SmsTestHttpServiceClient(HttpClient client) : ISmsTestServiceClient, IDisposable
 {
-    private readonly HttpClient _client;
-
-    public SmsTestHttpServiceClient(
-        Uri uri,
-        string username,
-        string password)
-    {
-        var credentials = Convert.ToBase64String(
-           Encoding.UTF8.GetBytes($"{username}:{password}"));
-
-        _client = new()
-        {
-            BaseAddress = uri
-        };
-
-        _client.DefaultRequestHeaders.Authorization =
-            new AuthenticationHeaderValue("Basic", credentials);
-    }
-
     public async Task<GetMenuResponseDto> GetMenuAsync(
         GetMenuRequestDto request,
         CancellationToken token = default)
     {
-        var response = await _client.PostAsJsonAsync(
+        var response = await client.PostAsJsonAsync(
             string.Empty,
-            request.ToHttpDto(),
+            new HttpRequestDto
+            {
+                Command = SmsTestApiCommands.GetMenuCommand,
+                CommandParameters = JsonSerializer.SerializeToElement(
+                    request.ToHttpDto())
+            },
             token);
 
         if (!response.IsSuccessStatusCode)
@@ -53,9 +38,14 @@ public class SmsTestHttpServiceClient : ISmsTestServiceClient, IDisposable
         SendOrderRequestDto request,
         CancellationToken token = default)
     {
-        var response = await _client.PostAsJsonAsync(
+        var response = await client.PostAsJsonAsync(
             string.Empty,
-            request.ToHttpDto(),
+            new HttpRequestDto
+            {
+                Command = SmsTestApiCommands.SendOrderCommand,
+                CommandParameters = JsonSerializer.SerializeToElement(
+                    request.ToHttpDto())
+            },
             token);
 
         if (!response.IsSuccessStatusCode)
@@ -71,6 +61,6 @@ public class SmsTestHttpServiceClient : ISmsTestServiceClient, IDisposable
 
     public void Dispose()
     {
-        _client?.Dispose();
+        client?.Dispose();
     }
 }
