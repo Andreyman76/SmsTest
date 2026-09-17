@@ -63,7 +63,7 @@ internal class ConsoleApplication(
                 sb.AppendLine(item.Price.ToString(CultureInfo.InvariantCulture));
             }
 
-            Console.WriteLine(sb.ToString());
+            console.WriteLine(sb.ToString());
 
             do
             {
@@ -75,7 +75,7 @@ internal class ConsoleApplication(
 
                 try
                 {
-                    // Заказ по вооду пользователя
+                    // Заказ по вводу пользователя
                     userInputOrderItems = OrdersTextParser.Parse(line);
                 }
                 catch (FormatException formatException)

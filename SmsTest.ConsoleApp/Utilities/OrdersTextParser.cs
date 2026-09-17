@@ -1,47 +1,89 @@
 ﻿using System.Globalization;
-using System.Text.RegularExpressions;
+using System.Text;
 
 namespace SmsTest.ConsoleApp.Utilities;
 
 /// <summary>
 /// Парсер пользовательского ввода заказа в следующем формате: Код1:Количество1;Код2:Количество2;Код3:Количество3; 
 /// </summary>
-internal static partial class OrdersTextParser
+internal static class OrdersTextParser
 {
-    private static readonly Regex _orderItemsRegex = OrderItemsRegex();
+    private const char OrdersSeparator = ';';
+    private const char OrderDataSeparator = ':';
 
-    public static List<UserInputOrderItem> Parse(string ordersText)
+    public static List<UserInputOrderItem> Parse(ReadOnlySpan<char> ordersText)
     {
-        var matches = _orderItemsRegex.Matches(ordersText);
+        var result = new List<UserInputOrderItem>();
 
-        if (matches.Count < 1)
+        var sb = new StringBuilder();
+        var article = string.Empty;
+        var searchArticle = true;
+
+        foreach (var c in ordersText)
+        {
+            if (searchArticle)
+            {
+                if (c == OrderDataSeparator)
+                {
+                    article = sb.ToString().Trim();
+                    sb.Clear();
+                    searchArticle = false;
+                    continue;
+                }
+
+                sb.Append(c);
+            }
+            else
+            {
+                if (c == OrdersSeparator)
+                {
+                    result.Add(CreateOrderItem(
+                        article,
+                        sb.ToString()));
+
+                    sb.Clear();
+                    searchArticle = true;
+                    continue;
+                }
+
+                sb.Append(c);
+            }
+        }
+
+        if (string.IsNullOrEmpty(article))
         {
             throw new FormatException("Строка заказов имеет неверный формат");
         }
 
-        var result = new List<UserInputOrderItem>();
-
-        foreach (Match match in matches)
+        if (sb.Length > 0)
         {
-            var article = match.Groups["article"].Value;
-            var quantityStr = match.Groups["quantity"].Value;
-
-            if (double.TryParse(
-                quantityStr.Replace(',', '.'),
-                CultureInfo.InvariantCulture,
-                out var quantity))
+            if (!searchArticle)
             {
-                result.Add(new UserInputOrderItem(article, quantity));
+                result.Add(CreateOrderItem(
+                        article,
+                        sb.ToString()));
             }
-            else
+            else if (!string.IsNullOrWhiteSpace(sb.ToString()))
             {
-                throw new FormatException($"Строка заказов имеет неверный формат: {quantityStr} не число");
+                throw new FormatException("Строка заказов имеет неверный формат");
             }
         }
 
         return result;
     }
 
-    [GeneratedRegex("(?<article>[^:;]+):(?<quantity>\\d+(?:[.,]\\d+)?);")]
-    private static partial Regex OrderItemsRegex();
+    private static UserInputOrderItem CreateOrderItem(string article, string quantity)
+    {
+        if (double.TryParse(
+                        quantity.Replace(',', '.'),
+                        CultureInfo.InvariantCulture,
+                        out var q))
+        {
+            return new UserInputOrderItem(article, q);
+        }
+        else
+        {
+            throw new FormatException($"Строка заказов имеет неверный формат: {quantity} не число");
+        }
+    }
 }
