@@ -3,12 +3,15 @@ using SmsTest.ConsoleApp.DAL.Entities;
 using SmsTest.ConsoleApp.Utilities;
 using SmsTest.Domain;
 using SmsTest.Domain.DTO;
+using System.Globalization;
+using System.Text;
 
 namespace SmsTest.ConsoleApp;
 
 internal class ConsoleApplication(
     ISmsTestServiceClient client,
-    DishRepository repository)
+    DishRepository repository,
+    LoggedConsole console)
 {
     public async Task RunAsync(CancellationToken token)
     {
@@ -32,34 +35,61 @@ internal class ConsoleApplication(
             }),
             token);
 
+            // Форматирование для удобства пользователя
+            var maxNameLength = 0;
+            var maxArticleLength = 0;
+
             foreach (var item in getMenuResponse.MenuItems)
             {
-                ConsoleLogger.WriteLine($"{item.Name} - {item.Article} - {item.Price}");
+                if (item.Name.Length > maxNameLength)
+                {
+                    maxNameLength = item.Name.Length;
+                }
+
+                if (item.Article.Length > maxArticleLength)
+                {
+                    maxArticleLength = item.Article.Length;
+                }
             }
+
+            var sb = new StringBuilder();
+
+            foreach (var item in getMenuResponse.MenuItems)
+            {
+                sb.Append(item.Name.PadRight(maxNameLength));
+                sb.Append(" - ");
+                sb.Append(item.Article.PadRight(maxArticleLength));
+                sb.Append(" - ");
+                sb.AppendLine(item.Price.ToString(CultureInfo.InvariantCulture));
+            }
+
+            Console.WriteLine(sb.ToString());
 
             do
             {
-                ConsoleLogger.WriteLine("Введите заказ в формате: Код1:Количество1;Код2:Количество2;Код3:Количество3;...");
+                console.WriteLine("Введите заказ в формате: Код1:Количество1;Код2:Количество2;Код3:Количество3;...");
 
-                var line = ConsoleLogger.ReadLine();
+                var line = console.ReadLine();
 
                 List<UserInputOrderItem> userInputOrderItems;
 
                 try
                 {
+                    // Заказ по вооду пользователя
                     userInputOrderItems = OrdersTextParser.Parse(line);
                 }
                 catch (FormatException formatException)
                 {
-                    ConsoleLogger.WriteLine(formatException.Message);
+                    console.WriteLine(formatException.Message);
                     continue;
                 }
 
+                // Валидация заказа по количеству
                 var wrongQuantityOrder = userInputOrderItems.FirstOrDefault(x => x.Quantity <= 0.0);
 
                 if (wrongQuantityOrder is not null)
                 {
-                    ConsoleLogger.WriteLine($"Для блюда {wrongQuantityOrder.Article} задано неверное количество {wrongQuantityOrder.Quantity}. Ожидается больше нуля");
+                    console.WriteLine($"Для блюда {wrongQuantityOrder.Article} задано неверное количество {wrongQuantityOrder.Quantity}. Ожидается больше нуля");
                     continue;
                 }
 
@@ -67,8 +97,10 @@ internal class ConsoleApplication(
                     .Select(x => x.Article)
                     .ToArray();
 
+                // Поиск товаров в БД по артикулам
                 var dishes = await repository.FindDishesByArticlesAsync(articles, token);
 
+                // Сопоставление блюд по артикулу, формирование заказа
                 var orderItems = userInputOrderItems
                     .Join(
                         dishes,
@@ -79,12 +111,14 @@ internal class ConsoleApplication(
                             input.Quantity))
                     .ToArray();
 
+                // Валидация заказа по наличию блюд
                 if (orderItems.Length != userInputOrderItems.Count)
                 {
-                    ConsoleLogger.WriteLine("Одно или несколько блюд не найдены");
+                    console.WriteLine("Одно или несколько блюд не найдены");
                     continue;
                 }
 
+                // Отправка заказа
                 var sendOrderResponse = await client.SendOrderAsync(
                     new SendOrderRequestDto(
                         Guid.NewGuid(),
@@ -96,9 +130,9 @@ internal class ConsoleApplication(
                     throw new InvalidOperationException($"Сервер вернул ошибку на запрос создания заказа: {sendOrderResponse.ErrorMessage}");
                 }
 
-                ConsoleLogger.WriteLine("УСПЕХ");
+                console.WriteLine("УСПЕХ");
             }
-            while (!token.IsCancellationRequested);
+            while (!token.IsCancellationRequested); // Пользователь может отправлять заказы сколько угодно
         }
         catch (OperationCanceledException)
         {
@@ -106,7 +140,7 @@ internal class ConsoleApplication(
         }
         catch (Exception ex)
         {
-            ConsoleLogger.WriteLine(ex.Message);
+            console.WriteLine(ex.Message);
         }
     }
 }

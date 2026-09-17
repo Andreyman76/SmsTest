@@ -4,28 +4,42 @@ using SmsTest.ConsoleApp.DAL.Entities;
 
 namespace SmsTest.ConsoleApp.DAL;
 
+/// <summary>
+/// Репозиторий, инкапсулирующий логику работы с DbContext
+/// </summary>
+/// <param name="scopeFactory"></param>
 internal class DishRepository(IServiceScopeFactory scopeFactory)
 {
+    /// <summary>
+    /// Обновление меню на актуальное
+    /// </summary>
+    /// <param name="dishes"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
     public async Task ReplaceMenuAsync(
         IEnumerable<Dish> dishes,
         CancellationToken token = default)
     {
         using var scope = scopeFactory.CreateScope();
-
-        var context = scope.ServiceProvider.GetRequiredService<SmsTestDbContext>();
+        using var context = scope.ServiceProvider.GetRequiredService<SmsTestDbContext>();
 
         await context.Dishes.ExecuteDeleteAsync(token);
         await context.AddRangeAsync(dishes, token);
         await context.SaveChangesAsync(token);
     }
 
+    /// <summary>
+    /// Поиск товаров по атикулам
+    /// </summary>
+    /// <param name="articles"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
     public async Task<Dish[]> FindDishesByArticlesAsync(
         IEnumerable<string> articles,
         CancellationToken token = default)
     {
         using var scope = scopeFactory.CreateScope();
-
-        var context = scope.ServiceProvider.GetRequiredService<SmsTestDbContext>();
+        using var context = scope.ServiceProvider.GetRequiredService<SmsTestDbContext>();
 
         var dishes = await context.Dishes
             .AsNoTracking()

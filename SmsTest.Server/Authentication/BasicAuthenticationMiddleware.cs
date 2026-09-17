@@ -5,6 +5,11 @@ using System.Text;
 
 namespace SmsTest.Server.Authentication;
 
+/// <summary>
+/// Middleware базовой аутентификации
+/// </summary>
+/// <param name="next"></param>
+/// <param name="configuration"></param>
 internal class BasicAuthenticationMiddleware(
     RequestDelegate next,
     IConfiguration configuration)

@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace SmsTest.ConsoleApp.Utilities;
 
+/// <summary>
+/// Парсер пользовательского ввода заказа в следующем формате: Код1:Количество1;Код2:Количество2;Код3:Количество3; 
+/// </summary>
 internal static partial class OrdersTextParser
 {
     private static readonly Regex _orderItemsRegex = OrderItemsRegex();

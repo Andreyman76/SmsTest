@@ -3,6 +3,10 @@ using SmsTest.Domain.DTO;
 
 namespace SmsTest.Contracts;
 
+/// <summary>
+/// <para>Методы расширения для маппинга сущностей gRPC</para>
+/// <para>Решено не использовать AutoMapper для столь небольшого проекта</para>
+/// </summary>
 public static class GrpcMappingExtensions
 {
     public static GetMenuResponse ToProto(this GetMenuResponseDto response)

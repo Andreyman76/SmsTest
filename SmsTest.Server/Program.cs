@@ -18,14 +18,9 @@ internal class Program
             EnvironmentName = Environments.Development
         });
 
-        builder.WebHost.UseKestrel();
+        ConfigureServices(builder);
 
-        builder.Services.AddGrpc();
-        builder.Services.AddGrpcReflection();
-        builder.Services.AddSingleton<SmsTestServiceMockup>();
-        builder.Services.AddSingleton<SmsTestHttpService>();
-
-        var app = builder.Build();
+        using var app = builder.Build();
 
         app.UseMiddleware<BasicAuthenticationMiddleware>();
 
@@ -47,5 +42,14 @@ internal class Program
         app.MapGrpcService<SmsTestGrpcService>();
 
         await app.RunAsync();
+    }
+
+    private static void ConfigureServices(WebApplicationBuilder builder)
+    {
+        builder.WebHost.UseKestrel();
+        builder.Services.AddGrpc();
+        builder.Services.AddGrpcReflection();
+        builder.Services.AddSingleton<ISmsTestService, SmsTestServiceMockup>();
+        builder.Services.AddSingleton<SmsTestHttpService>();
     }
 }

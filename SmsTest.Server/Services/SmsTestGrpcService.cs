@@ -6,29 +6,51 @@ using SmsTest.Domain.DTO;
 
 namespace SmsTest.Server.Services;
 
-internal class SmsTestGrpcService(SmsTestServiceMockup service)
+internal class SmsTestGrpcService(ISmsTestService service)
     : SmsTestService.SmsTestServiceBase
 {
     public override async Task<GetMenuResponse> GetMenu(
         BoolValue request,
         ServerCallContext context)
     {
-        var response = await service.GetMenuAsync(
-            new GetMenuRequestDto(
-                WithPrice: request.Value),
-            context.CancellationToken);
+        try
+        {
+            var response = await service.GetMenuAsync(
+                new GetMenuRequestDto(
+                    WithPrice: request.Value),
+                context.CancellationToken);
 
-        return response.ToProto();
+            return response.ToProto();
+        }
+        catch (Exception ex)
+        {
+            return new GetMenuResponse
+            {
+                Success = false,
+                ErrorMessage = ex.Message
+            };
+        }
     }
 
     public override async Task<SendOrderResponse> SendOrder(
         Order request,
         ServerCallContext context)
     {
-        var response = await service.SendOrderAsync(
-            request.ToDto(),
-            context.CancellationToken);
+        try
+        {
+            var response = await service.SendOrderAsync(
+                request.ToDto(),
+                context.CancellationToken);
 
-        return response.ToProto();
+            return response.ToProto();
+        }
+        catch (Exception ex)
+        {
+            return new SendOrderResponse
+            {
+                Success = false,
+                ErrorMessage = ex.Message
+            };
+        }
     }
 }

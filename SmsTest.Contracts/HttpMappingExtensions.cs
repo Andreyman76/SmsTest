@@ -4,6 +4,10 @@ using System.Globalization;
 
 namespace SmsTest.Contracts;
 
+/// <summary>
+/// <para>Методы расширения для маппинга сущностей HTTP</para>
+/// <para>Решено не использовать AutoMapper для столь небольшого проекта</para>
+/// </summary>
 public static class HttpMappingExtensions
 {
     public static HttpGetMenuRequestDto ToHttpDto(this GetMenuRequestDto request)
