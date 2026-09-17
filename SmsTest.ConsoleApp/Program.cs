@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Serilog;
+using Sms.Test;
 using SmsTest.Client;
 using SmsTest.ConsoleApp.Configuration;
 using SmsTest.ConsoleApp.DAL;
@@ -62,10 +63,12 @@ internal class Program
         builder.Services
             .AddOptions<ServerOptions>()
             .BindConfiguration(ServerOptions.SectionName)
-            .ValidateOnStart();
+            .ValidateOnStart()
+            .Validate(ValidateServerOptions);
 
-        var protocol = builder.Configuration["Protocol"];
+        var protocol = builder.Configuration["Server:Protocol"];
 
+        // Под это дело лучше завести фабрику
         if (string.Equals(protocol, "http", StringComparison.OrdinalIgnoreCase))
         {
             builder.Services
@@ -91,15 +94,16 @@ internal class Program
         }
         else if (string.Equals(protocol, "grpc", StringComparison.OrdinalIgnoreCase))
         {
-            builder.Services.AddSingleton<ISmsTestServiceClient>((serviceProvider) =>
+            builder.Services.AddGrpcClient<SmsTestService.SmsTestServiceClient>((serviceProvider, options) =>
             {
-                var options = serviceProvider
+                var o = serviceProvider
                         .GetRequiredService<IOptions<ServerOptions>>()
                         .Value;
 
-                return new SmsTestGrpcServiceClient(
-                    new Uri(options.GrpcServerUrl));
+                options.Address = new Uri(o.GrpcServerUrl);
             });
+
+            builder.Services.AddSingleton<ISmsTestServiceClient, SmsTestGrpcServiceClient>();
         }
         else
         {
@@ -117,5 +121,22 @@ internal class Program
 
         builder.Services.AddSingleton<DishRepository>();
         builder.Services.AddTransient<ConsoleApplication>();
+    }
+
+    private static bool ValidateServerOptions(ServerOptions options)
+    {
+        if (string.Equals(options.Protocol, "http", StringComparison.OrdinalIgnoreCase))
+        {
+            return !string.IsNullOrWhiteSpace(options.HttpServerUrl)
+                && !string.IsNullOrWhiteSpace(options.Username)
+                && !string.IsNullOrWhiteSpace(options.Password);
+        }
+
+        if (string.Equals(options.Protocol, "grpc", StringComparison.OrdinalIgnoreCase))
+        {
+            return !string.IsNullOrWhiteSpace(options.GrpcServerUrl);
+        }
+
+        return false;
     }
 }

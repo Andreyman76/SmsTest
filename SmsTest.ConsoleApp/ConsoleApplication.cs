@@ -127,7 +127,8 @@ internal class ConsoleApplication(
 
                 if (!sendOrderResponse.Success)
                 {
-                    throw new InvalidOperationException($"Сервер вернул ошибку на запрос создания заказа: {sendOrderResponse.ErrorMessage}");
+                    console.WriteLine($"Сервер вернул ошибку на запрос создания заказа: {sendOrderResponse.ErrorMessage}");
+                    continue;
                 }
 
                 console.WriteLine("УСПЕХ");

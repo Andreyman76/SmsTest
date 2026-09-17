@@ -4,8 +4,9 @@ internal sealed class ServerOptions
 {
     public const string SectionName = "Server";
 
-    public required string GrpcServerUrl { get; init; }
-    public required string HttpServerUrl { get; init; }
-    public required string Username { get; init; }
-    public required string Password { get; init; }
+    public required string Protocol { get; init; }
+    public string GrpcServerUrl { get; init; } = string.Empty;
+    public string HttpServerUrl { get; init; } = string.Empty;
+    public string Username { get; init; } = string.Empty;
+    public string Password { get; init; } = string.Empty;
 }

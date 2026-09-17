@@ -13,22 +13,22 @@
 
 ```json
 { 
-	"Command": "SendOrder", 
-	"CommandParameters": 
-	{ 
-		"OrderId": "62137983-1117-4D10-87C1-EF40A4348250", 
-		"MenuItems":
-		[ 
-			{
-				"Id": "5979224", 
-				"Quantity": "1" 
-			}, 
-			{ 
-				"Id": "9084246", 
-				"Quantity": "0.408" 
-			} 
-		]
-	}
+    "Command": "SendOrder", 
+    "CommandParameters": 
+    { 
+        "OrderId": "62137983-1117-4D10-87C1-EF40A4348250", 
+        "MenuItems":
+        [ 
+            {
+                "Id": "5979224", 
+                "Quantity": "1" 
+            }, 
+            { 
+                "Id": "9084246", 
+                "Quantity": "0.408" 
+            } 
+        ]
+    }
 }
 ```
 
@@ -40,8 +40,8 @@
 
 ```protobuf
 service SmsTestService { 
-	rpc GetMenu(google.protobuf.BoolValue) returns (GetMenuResponse);
-	rpc SendOrder(Order) returns (SendOrderResponse); 
+    rpc GetMenu(google.protobuf.BoolValue) returns (GetMenuResponse);
+    rpc SendOrder(Order) returns (SendOrderResponse); 
 }
 ```
 
@@ -53,7 +53,13 @@ service SmsTestService {
 
 ```json
 {
-    "Protocol": "HTTP",
+    "Server": {
+        "Protocol": "HTTP",
+        "GrpcServerUrl": "http://localhost:5000",
+        "HttpServerUrl": "http://localhost:5001/api",
+        "Username": "api-user",
+        "Password": "123qweR%"
+    },
     ...
 }
 ```

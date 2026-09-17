@@ -8,7 +8,7 @@ using System.Text.Json;
 namespace SmsTest.Client;
 
 public class SmsTestHttpServiceClient(HttpClient client)
-    : ISmsTestServiceClient, IDisposable
+    : ISmsTestServiceClient
 {
     public async Task<GetMenuResponseDto> GetMenuAsync(
         GetMenuRequestDto request,
@@ -58,10 +58,5 @@ public class SmsTestHttpServiceClient(HttpClient client)
 
         return responseDto?.ToDto()
             ?? throw new InvalidOperationException("Неверное тело ответа");
-    }
-
-    public void Dispose()
-    {
-        client?.Dispose();
     }
 }
