@@ -1,3 +1,5 @@
 ﻿namespace SmsTest.ConsoleApp.Utilities;
 
-internal record UserInputOrderItem(string Article, double Quantity);
+internal sealed record UserInputOrderItem(
+    string Article,
+    double Quantity);

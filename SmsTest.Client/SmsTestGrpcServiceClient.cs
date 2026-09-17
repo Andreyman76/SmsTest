@@ -7,7 +7,8 @@ using SmsTest.Domain.DTO;
 
 namespace SmsTest.Client;
 
-public class SmsTestRpcServiceClient(Uri uri) : ISmsTestServiceClient
+public class SmsTestGrpcServiceClient(Uri uri)
+    : ISmsTestServiceClient
 {
     private readonly SmsTestService.SmsTestServiceClient _client =
         new(GrpcChannel.ForAddress(uri));

@@ -44,7 +44,7 @@ internal class Program
             app.MapGrpcReflectionService();
         }
 
-        app.MapGrpcService<SmsTestRpcService>();
+        app.MapGrpcService<SmsTestGrpcService>();
 
         await app.RunAsync();
     }

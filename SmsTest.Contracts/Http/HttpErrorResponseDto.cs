@@ -1,8 +1,7 @@
 ﻿namespace SmsTest.Contracts.Http;
 
-public sealed class HttpErrorResponseDto
-{
-    public required string Command { get; set; }
-    public required bool Success { get; set; }
-    public required string ErrorMessage { get; set; }
-}
+public sealed record HttpErrorResponseDto(
+    string Command,
+    bool Success,
+    string ErrorMessage
+);

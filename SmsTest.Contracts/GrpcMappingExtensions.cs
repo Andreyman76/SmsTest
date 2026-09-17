@@ -22,9 +22,10 @@ public static class GrpcMappingExtensions
     public static GetMenuResponseDto ToDto(this GetMenuResponse response)
     {
         return new GetMenuResponseDto(
-            response.Success,
-            response.ErrorMessage,
-            [.. response.MenuItems.Select(ToDto)]);
+            Success: response.Success,
+            ErrorMessage: response.ErrorMessage,
+            MenuItems: [.. response.MenuItems.Select(ToDto)]
+        );
     }
 
     public static MenuItem ToProto(this MenuItemDto menuItem)
@@ -47,13 +48,14 @@ public static class GrpcMappingExtensions
     public static MenuItemDto ToDto(this MenuItem item)
     {
         return new MenuItemDto(
-            item.Id,
-            item.Article,
-            item.Name,
-            item.Price,
-            item.IsWeighted,
-            item.FullPath,
-            [.. item.Barcodes]);
+            Id: item.Id,
+            Article: item.Article,
+            Name: item.Name,
+            Price: item.Price,
+            IsWeighted: item.IsWeighted,
+            FullPath: item.FullPath,
+            Barcodes: [.. item.Barcodes]
+        );
     }
 
     public static Order ToProto(this SendOrderRequestDto order)
@@ -72,8 +74,9 @@ public static class GrpcMappingExtensions
     public static SendOrderRequestDto ToDto(this Order order)
     {
         return new SendOrderRequestDto(
-            Guid.Parse(order.Id),
-            [.. order.OrderItems.Select(ToDto)]);
+            OrderId: Guid.Parse(order.Id),
+            OrderItems: [.. order.OrderItems.Select(ToDto)]
+        );
     }
 
     public static OrderItem ToProto(this OrderItemDto orderItem)
@@ -88,8 +91,9 @@ public static class GrpcMappingExtensions
     public static OrderItemDto ToDto(this OrderItem item)
     {
         return new OrderItemDto(
-            item.Id,
-            item.Quantity);
+            Id: item.Id,
+            Quantity: item.Quantity
+        );
     }
 
     public static SendOrderResponse ToProto(this SendOrderResponseDto response)
@@ -104,7 +108,8 @@ public static class GrpcMappingExtensions
     public static SendOrderResponseDto ToDto(this SendOrderResponse response)
     {
         return new SendOrderResponseDto(
-            response.Success,
-            response.ErrorMessage);
+            Success: response.Success,
+            ErrorMessage: response.ErrorMessage
+        );
     }
 }

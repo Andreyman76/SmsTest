@@ -95,12 +95,11 @@ internal class SmsTestHttpService(SmsTestServiceMockup service)
         string command,
         string errorMessage)
     {
-        return Results.Json(new HttpErrorResponseDto
-        {
-            Success = false,
-            Command = command,
-            ErrorMessage = errorMessage
-        },
+        return Results.Json(new HttpErrorResponseDto(
+            Command: command,
+            Success: false,
+            ErrorMessage: errorMessage
+        ),
         JsonSerializerOptions.Default,
         statusCode: 200);
     }

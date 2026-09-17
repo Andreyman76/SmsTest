@@ -59,7 +59,7 @@ internal class ConsoleApplication(
 
                 if (wrongQuantityOrder is not null)
                 {
-                    ConsoleLogger.WriteLine($"Для товара {wrongQuantityOrder.Article} задано неверное количество {wrongQuantityOrder.Quantity}. Ожидается больше нуля");
+                    ConsoleLogger.WriteLine($"Для блюда {wrongQuantityOrder.Article} задано неверное количество {wrongQuantityOrder.Quantity}. Ожидается больше нуля");
                     continue;
                 }
 
@@ -81,7 +81,7 @@ internal class ConsoleApplication(
 
                 if (orderItems.Length != userInputOrderItems.Count)
                 {
-                    ConsoleLogger.WriteLine("Один или несколько товаров не найдены");
+                    ConsoleLogger.WriteLine("Одно или несколько блюд не найдены");
                     continue;
                 }
 
@@ -100,10 +100,13 @@ internal class ConsoleApplication(
             }
             while (!token.IsCancellationRequested);
         }
+        catch (OperationCanceledException)
+        {
+            // Ignore
+        }
         catch (Exception ex)
         {
             ConsoleLogger.WriteLine(ex.Message);
-            return;
         }
     }
 }

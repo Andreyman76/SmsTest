@@ -6,14 +6,16 @@ using SmsTest.Domain.DTO;
 
 namespace SmsTest.Server.Services;
 
-internal class SmsTestRpcService(SmsTestServiceMockup service) : SmsTestService.SmsTestServiceBase
+internal class SmsTestGrpcService(SmsTestServiceMockup service)
+    : SmsTestService.SmsTestServiceBase
 {
     public override async Task<GetMenuResponse> GetMenu(
         BoolValue request,
         ServerCallContext context)
     {
         var response = await service.GetMenuAsync(
-            new GetMenuRequestDto(request.Value),
+            new GetMenuRequestDto(
+                WithPrice: request.Value),
             context.CancellationToken);
 
         return response.ToProto();

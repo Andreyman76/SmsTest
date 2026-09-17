@@ -69,7 +69,7 @@ internal class Program
                             .GetRequiredService<IOptions<ServerOptions>>()
                             .Value;
 
-                    return new SmsTestRpcServiceClient(
+                    return new SmsTestGrpcServiceClient(
                         new Uri(options.GrpcServerUrl));
                 });
             }
