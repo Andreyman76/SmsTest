@@ -63,10 +63,15 @@ internal static class OrdersTextParser
                         article,
                         sb.ToString()));
             }
-            else if (!string.IsNullOrWhiteSpace(sb.ToString()))
+            else if (!string.IsNullOrWhiteSpace(
+                sb.ToString()))
             {
                 throw new FormatException("Строка заказов имеет неверный формат");
             }
+        }
+        else if (!searchArticle)
+        {
+            throw new FormatException("Строка заказов имеет неверный формат");
         }
 
         return result;

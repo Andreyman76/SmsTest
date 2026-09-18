@@ -33,6 +33,10 @@ public class EnvironmentVariablesService(
                     variable.Name,
                     value,
                     Target);
+
+                logger?.Information(
+                    "Environment variable {Name} initialized",
+                    variable.Name);
             }
 
             result[i] = new EnvironmentVariable(
@@ -48,6 +52,15 @@ public class EnvironmentVariablesService(
 
     public void SetVariable(string name, string value)
     {
+        var oldValue = Environment.GetEnvironmentVariable(
+            name,
+            Target);
+
+        if (oldValue == value)
+        {
+            return;
+        }
+
         Environment.SetEnvironmentVariable(
             name,
             value,

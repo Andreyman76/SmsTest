@@ -92,11 +92,11 @@ internal class SmsTestServiceMockup
             ["57890975627974236435"])
     ];
 
-    public async Task<GetMenuResponseDto> GetMenuAsync(
+    public Task<GetMenuResponseDto> GetMenuAsync(
         GetMenuRequestDto request,
         CancellationToken token = default)
     {
-        return new GetMenuResponseDto(
+        var response = new GetMenuResponseDto(
             true,
             string.Empty,
             request.WithPrice
@@ -110,9 +110,11 @@ internal class SmsTestServiceMockup
                 x.FullPath,
                 x.Barcodes
             )).ToArray());
+
+        return Task.FromResult(response);
     }
 
-    public async Task<SendOrderResponseDto> SendOrderAsync(
+    public Task<SendOrderResponseDto> SendOrderAsync(
         SendOrderRequestDto order,
         CancellationToken token = default)
     {
@@ -120,21 +122,24 @@ internal class SmsTestServiceMockup
         {
             if (!_menu.Any(x => x.Id == item.Id))
             {
-                return new SendOrderResponseDto(
+                return Task.FromResult(new SendOrderResponseDto(
                     false,
-                    $"Блюда с id {item.Id} нет в меню");
+                    $"Блюда с id {item.Id} нет в меню")
+                );
             }
 
             if (item.Quantity <= 0.0)
             {
-                return new SendOrderResponseDto(
+                return Task.FromResult(new SendOrderResponseDto(
                     false,
-                    $"Для блюда с id {item.Id} указано неверное количество {item.Quantity}, ожидалось больше нуля");
+                    $"Для блюда с id {item.Id} указано неверное количество {item.Quantity}, ожидалось больше нуля")
+                );
             }
         }
 
-        return new SendOrderResponseDto(
+        return Task.FromResult(new SendOrderResponseDto(
             true,
-            string.Empty);
+            string.Empty)
+        );
     }
 }

@@ -19,7 +19,7 @@ public partial class App : Application
 
     public App()
     {
-        HostApplicationBuilder builder =
+        var builder =
            Host.CreateApplicationBuilder();
 
         ConfigureServices(builder);

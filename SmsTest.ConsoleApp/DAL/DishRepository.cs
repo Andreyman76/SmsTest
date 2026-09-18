@@ -8,7 +8,8 @@ namespace SmsTest.ConsoleApp.DAL;
 /// Репозиторий, инкапсулирующий логику работы с DbContext
 /// </summary>
 /// <param name="scopeFactory"></param>
-internal class DishRepository(IServiceScopeFactory scopeFactory)
+internal class DishRepository(
+    IServiceScopeFactory scopeFactory)
 {
     /// <summary>
     /// Обновление меню на актуальное

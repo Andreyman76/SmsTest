@@ -9,5 +9,6 @@
   <Project Path="SmsTest.Contracts/SmsTest.Contracts.csproj" Id="436e7618-4d76-425c-8341-583e114b3d0f" />
   <Project Path="SmsTest.Domain/SmsTest.Domain.csproj" Id="bd447e83-ed3a-42a5-a1d4-b49311f69297" />
   <Project Path="SmsTest.Server/SmsTest.Server.csproj" Id="77e0542f-bfcd-432f-a7f6-a8735daa7307" />
+  <Project Path="SmsTest.Tests/SmsTest.Tests.csproj" Id="222b5d59-fc0f-4fdb-a30b-6d720ba4d854" />
   <Project Path="SmsTest.Wpf/SmsTest.Wpf.csproj" Id="9f4136aa-bc55-4b7d-b2be-a1ac926e75b8" />
 </Solution>
