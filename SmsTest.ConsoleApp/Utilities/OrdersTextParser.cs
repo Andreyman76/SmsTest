@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Text;
 
 namespace SmsTest.ConsoleApp.Utilities;
 
@@ -9,80 +8,103 @@ namespace SmsTest.ConsoleApp.Utilities;
 internal static class OrdersTextParser
 {
     private const char OrdersSeparator = ';';
-    private const char OrderDataSeparator = ':';
+    private const char OrderParametersSeparator = ':';
 
-    public static List<UserInputOrderItem> Parse(ReadOnlySpan<char> ordersText)
+    public static List<UserInputOrderItem> Parse(
+        ReadOnlySpan<char> ordersText)
     {
+        var text = ordersText.Trim();
         var result = new List<UserInputOrderItem>();
 
-        var sb = new StringBuilder();
-        var article = string.Empty;
-        var searchArticle = true;
+        var i = 0;
 
-        foreach (var c in ordersText)
+        do
         {
-            if (searchArticle)
+            var article = GetOrderParameterOrDefault(
+                text,
+                i
+            );
+
+            var cleanArticle = article.Trim();
+
+            if (cleanArticle.Length < 1)
             {
-                if (c == OrderDataSeparator)
-                {
-                    article = sb.ToString().Trim();
-                    sb.Clear();
-                    searchArticle = false;
-                    continue;
-                }
-
-                sb.Append(c);
+                throw new FormatException($"Строка заказов имеет неверный формат: не заполнен артикул");
             }
-            else
+
+            i += article.Length;
+
+            if (i >= text.Length
+                || (i < text.Length
+                && text[i] != OrderParametersSeparator))
             {
-                if (c == OrdersSeparator)
-                {
-                    result.Add(CreateOrderItem(
-                        article,
-                        sb.ToString()));
-
-                    sb.Clear();
-                    searchArticle = true;
-                    continue;
-                }
-
-                sb.Append(c);
+                throw new FormatException($"Строка заказов имеет неверный формат: ожидается `{OrderParametersSeparator}` после артикула");
             }
-        }
 
-        if (string.IsNullOrEmpty(article))
-        {
-            throw new FormatException("Строка заказов имеет неверный формат");
-        }
+            i++;
 
-        if (sb.Length > 0)
-        {
-            if (!searchArticle)
+            var quantity = GetOrderParameterOrDefault(
+                text,
+                i
+            );
+
+            var cleanQuantity = quantity.Trim();
+
+            if (cleanQuantity.Length < 1)
             {
-                result.Add(CreateOrderItem(
-                        article,
-                        sb.ToString()));
+                throw new FormatException($"Строка заказов имеет неверный формат: не заполнено количество");
             }
-            else if (!string.IsNullOrWhiteSpace(
-                sb.ToString()))
+
+            i += quantity.Length;
+
+            result.Add(
+                ParseOrderItem(
+                    cleanArticle.ToString(),
+                    cleanQuantity.ToString())
+                );
+
+            if (i < text.Length
+                && text[i] != OrdersSeparator)
             {
-                throw new FormatException("Строка заказов имеет неверный формат");
+                throw new FormatException($"Строка заказов имеет неверный формат: ожидается `{OrdersSeparator}` перед следующим заказом");
             }
+
+            i++;
         }
-        else if (!searchArticle)
-        {
-            throw new FormatException("Строка заказов имеет неверный формат");
-        }
+        while (i < text.Length);
 
         return result;
     }
 
-    private static UserInputOrderItem CreateOrderItem(string article, string quantity)
+    private static ReadOnlySpan<char> GetOrderParameterOrDefault(
+        ReadOnlySpan<char> ordersText,
+        int fromPosition
+        )
+    {
+        var length = 0;
+
+        for (int i = fromPosition; i < ordersText.Length; i++)
+        {
+            if (ordersText[i] == OrderParametersSeparator
+                || ordersText[i] == OrdersSeparator)
+            {
+                return ordersText.Slice(fromPosition, length);
+            }
+
+            length++;
+        }
+
+        return ordersText[fromPosition..];
+    }
+
+    private static UserInputOrderItem ParseOrderItem(
+        string article,
+        string quantity)
     {
         if (double.TryParse(
-                        quantity.Replace(',', '.'),
-                        CultureInfo.InvariantCulture,
-                        out var q))
+            quantity.Replace(',', '.'),
+            CultureInfo.InvariantCulture,
+            out var q))
         {
             return new UserInputOrderItem(article, q);
         }

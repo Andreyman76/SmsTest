@@ -83,12 +83,47 @@ public class OrdersTextParserTest
 
         Assert.Throws<FormatException>(() =>
         {
+            OrdersTextParser.Parse("A1004292:123:A1004293");
+        });
+
+        Assert.Throws<FormatException>(() =>
+        {
+            OrdersTextParser.Parse("  A1004292 :  123  : A1004293  ");
+        });
+
+        Assert.Throws<FormatException>(() =>
+        {
+            OrdersTextParser.Parse("A1004292:;A1004293:123");
+        });
+
+        Assert.Throws<FormatException>(() =>
+        {
             OrdersTextParser.Parse("A1004292:123qwe");
         });
 
         Assert.Throws<FormatException>(() =>
         {
             OrdersTextParser.Parse(":123");
+        });
+
+        Assert.Throws<FormatException>(() =>
+        {
+            OrdersTextParser.Parse(":123;");
+        });
+
+        Assert.Throws<FormatException>(() =>
+        {
+            OrdersTextParser.Parse("::123");
+        });
+
+        Assert.Throws<FormatException>(() =>
+        {
+            OrdersTextParser.Parse(";123");
+        });
+
+        Assert.Throws<FormatException>(() =>
+        {
+            OrdersTextParser.Parse(";;123");
         });
 
         Assert.Throws<FormatException>(() =>
@@ -124,6 +159,16 @@ public class OrdersTextParserTest
         Assert.Throws<FormatException>(() =>
         {
             OrdersTextParser.Parse(" ");
+        });
+
+        Assert.Throws<FormatException>(() =>
+        {
+            OrdersTextParser.Parse("A1:1;;A2:2;");
+        });
+
+        Assert.Throws<FormatException>(() =>
+        {
+            OrdersTextParser.Parse("  A1004292:123; :123");
         });
     }
 }
