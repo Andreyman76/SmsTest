@@ -56,7 +56,9 @@ internal class Program
         builder.Services
             .AddSerilog(Log.Logger)
             .AddSingleton<LoggedConsole>()
-            .AddSmsTestServiceClient(builder.Configuration["Server:Protocol"])
+            .AddSmsTestServiceClient(builder.Configuration
+                .GetSection(ServerOptions.SectionName)
+                .Get<ServerOptions>() ?? throw new InvalidOperationException($"{nameof(ServerOptions)} не задан"))
             .AddSingleton<DishRepository>()
             .AddTransient<ConsoleApplication>()
             .AddDbContext<SmsTestDbContext>(options =>
@@ -66,8 +68,6 @@ internal class Program
                         "Строка подключения 'Database' не задана");
 
                 options.UseNpgsql(connectionString);
-            })
-            .AddOptions<ServerOptions>()
-            .BindConfiguration(ServerOptions.SectionName);
+            });
     }
 }

@@ -22,11 +22,18 @@ internal class DishRepository(
         CancellationToken token = default)
     {
         using var scope = scopeFactory.CreateScope();
-        using var context = scope.ServiceProvider.GetRequiredService<SmsTestDbContext>();
+        using var context
+            = scope.ServiceProvider.GetRequiredService<SmsTestDbContext>();
+
+        await using var transaction
+            = await context.Database.BeginTransactionAsync(token);
 
         await context.Dishes.ExecuteDeleteAsync(token);
-        await context.AddRangeAsync(dishes, token);
+
+        context.Dishes.AddRange(dishes);
+
         await context.SaveChangesAsync(token);
+        await transaction.CommitAsync(token);
     }
 
     /// <summary>

@@ -11,24 +11,20 @@ namespace SmsTest.ConsoleApp.Configuration;
 internal static class DependencyInjection
 {
     public static IServiceCollection AddSmsTestServiceClient(
-        this IServiceCollection services, string? protocol)
+        this IServiceCollection services, ServerOptions serverOptions)
     {
-        if (string.Equals(protocol, "http", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(serverOptions.Protocol, "http", StringComparison.OrdinalIgnoreCase))
         {
             // Регистрация как typed client
             services.AddHttpClient<ISmsTestServiceClient, SmsTestHttpServiceClient>(
                 (serviceProvider, client) =>
                 {
-                    var options = serviceProvider
-                        .GetRequiredService<IOptions<ServerOptions>>()
-                        .Value;
-
-                    client.BaseAddress = ValidateHttpServerOptions(options);
+                    client.BaseAddress = ValidateHttpServerOptions(serverOptions);
 
                     var credentials =
                         Convert.ToBase64String(
                             Encoding.UTF8.GetBytes(
-                                $"{options.Username}:{options.Password}"));
+                                $"{serverOptions.Username}:{serverOptions.Password}"));
 
                     client.DefaultRequestHeaders.Authorization =
                         new AuthenticationHeaderValue(
@@ -36,7 +32,7 @@ internal static class DependencyInjection
                             credentials);
                 });
         }
-        else if (string.Equals(protocol, "grpc", StringComparison.OrdinalIgnoreCase))
+        else if (string.Equals(serverOptions.Protocol, "grpc", StringComparison.OrdinalIgnoreCase))
         {
             services.AddGrpcClient<SmsTestService.SmsTestServiceClient>(
                 (serviceProvider, options) =>
@@ -45,14 +41,14 @@ internal static class DependencyInjection
                         .GetRequiredService<IOptions<ServerOptions>>()
                         .Value;
 
-                options.Address = ValidateGrpcServerOptions(o);
+                options.Address = ValidateGrpcServerOptions(serverOptions);
             });
 
             services.AddSingleton<ISmsTestServiceClient, SmsTestGrpcServiceClient>();
         }
         else
         {
-            throw new NotImplementedException($"Неизвестный протокол: {protocol}");
+            throw new NotImplementedException($"Неизвестный протокол: {serverOptions.Protocol}");
         }
 
         return services;
