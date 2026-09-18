@@ -53,28 +53,21 @@ internal class Program
                         .Build())
                 .CreateLogger();
 
-        builder.Services.AddSerilog(Log.Logger);
-        builder.Services.AddSingleton<LoggedConsole>();
-
         builder.Services
+            .AddSerilog(Log.Logger)
+            .AddSingleton<LoggedConsole>()
+            .AddSmsTestServiceClient(builder.Configuration["Server:Protocol"])
+            .AddSingleton<DishRepository>()
+            .AddTransient<ConsoleApplication>()
+            .AddDbContext<SmsTestDbContext>(options =>
+            {
+                var connectionString = builder.Configuration.GetConnectionString("Database")
+                    ?? throw new InvalidOperationException(
+                        "Строка подключения 'Database' не задана");
+
+                options.UseNpgsql(connectionString);
+            })
             .AddOptions<ServerOptions>()
-            .BindConfiguration(ServerOptions.SectionName)
-            .ValidateOnStart();
-
-        var protocol = builder.Configuration["Server:Protocol"];
-
-        builder.Services.AddSmsTestServiceClient(protocol);
-
-        builder.Services.AddDbContext<SmsTestDbContext>(options =>
-        {
-            var connectionString = builder.Configuration.GetConnectionString("Database")
-                ?? throw new InvalidOperationException(
-                    "Строка подключения 'Database' не задана");
-
-            options.UseNpgsql(connectionString);
-        });
-
-        builder.Services.AddSingleton<DishRepository>();
-        builder.Services.AddTransient<ConsoleApplication>();
+            .BindConfiguration(ServerOptions.SectionName);
     }
 }

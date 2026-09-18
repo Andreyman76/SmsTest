@@ -15,8 +15,8 @@ internal static class DependencyInjection
     {
         if (string.Equals(protocol, "http", StringComparison.OrdinalIgnoreCase))
         {
-            services
-                .AddHttpClient<ISmsTestServiceClient, SmsTestHttpServiceClient>(
+            // Регистрация как typed client
+            services.AddHttpClient<ISmsTestServiceClient, SmsTestHttpServiceClient>(
                 (serviceProvider, client) =>
                 {
                     var options = serviceProvider
@@ -38,7 +38,8 @@ internal static class DependencyInjection
         }
         else if (string.Equals(protocol, "grpc", StringComparison.OrdinalIgnoreCase))
         {
-            services.AddGrpcClient<SmsTestService.SmsTestServiceClient>((serviceProvider, options) =>
+            services.AddGrpcClient<SmsTestService.SmsTestServiceClient>(
+                (serviceProvider, options) =>
             {
                 var o = serviceProvider
                         .GetRequiredService<IOptions<ServerOptions>>()

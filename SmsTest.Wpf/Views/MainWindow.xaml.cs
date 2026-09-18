@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace SmsTest.Wpf;
+namespace SmsTest.Wpf.Views;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml

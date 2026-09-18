@@ -47,9 +47,10 @@ internal class Program
     private static void ConfigureServices(WebApplicationBuilder builder)
     {
         builder.WebHost.UseKestrel();
-        builder.Services.AddGrpc();
-        builder.Services.AddGrpcReflection();
-        builder.Services.AddSingleton<ISmsTestService, SmsTestServiceMockup>();
-        builder.Services.AddSingleton<SmsTestHttpService>();
+        builder.Services
+            .AddSingleton<ISmsTestService, SmsTestServiceMockup>()
+            .AddSingleton<SmsTestHttpService>()
+            .AddGrpcReflection()
+            .AddGrpc();
     }
 }

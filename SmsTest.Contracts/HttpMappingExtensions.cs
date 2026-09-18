@@ -39,11 +39,13 @@ public static class HttpMappingExtensions
 
     public static GetMenuResponseDto ToDto(this HttpGetMenuResponseDto response)
     {
+        var items = response.Data?.MenuItems
+                .Select(ToDto) ?? [];
+
         return new GetMenuResponseDto(
             response.Success,
             response.ErrorMessage,
-            [.. response.Data.MenuItems
-                .Select(ToDto)]
+            [.. items]
         );
     }
 

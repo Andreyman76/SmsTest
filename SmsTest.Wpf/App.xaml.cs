@@ -6,7 +6,9 @@ using Serilog;
 using SmsTest.Wpf.Configuration;
 using SmsTest.Wpf.Services;
 using SmsTest.Wpf.ViewModels;
+using SmsTest.Wpf.Views;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace SmsTest.Wpf;
 
@@ -19,12 +21,24 @@ public partial class App : Application
 
     public App()
     {
-        var builder =
-           Host.CreateApplicationBuilder();
+        try
+        {
+            DispatcherUnhandledException += HandleException;
 
-        ConfigureServices(builder);
+            var builder = Host.CreateApplicationBuilder();
+            ConfigureServices(builder);
+            _host = builder.Build();
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Приложение завершилось с критической ошибкой");
+            Environment.Exit(-1);
+        }
+    }
 
-        _host = builder.Build();
+    private void HandleException(object sender, DispatcherUnhandledExceptionEventArgs e)
+    {
+        Log.Fatal(e.Exception, "Приложение завершилось с критической ошибкой");
     }
 
     private static void ConfigureServices(
@@ -37,27 +51,25 @@ public partial class App : Application
                     .Build())
             .CreateLogger();
 
-        builder.Services.AddSerilog(Log.Logger);
-
         builder.Services
+            .AddSerilog(Log.Logger)
+            .AddTransient<MainWindowViewModel>()
+            .AddTransient<MainWindow>()
+
+            .AddSingleton<IEnvironmentVariablesService>(serviceProvider =>
+            {
+                var options = serviceProvider
+                          .GetRequiredService<IOptions<EnvironmentVariablesOptions>>()
+                          .Value;
+
+                return new EnvironmentVariablesService(
+                    options.KnownVariables,
+                    serviceProvider.GetService<ILogger>());
+            })
             .AddOptions<EnvironmentVariablesOptions>()
-            .BindConfiguration(EnvironmentVariablesOptions.SectionName)
-            .ValidateOnStart()
-            .Validate(ValidateEnvironmentVariables);
-
-        builder.Services.AddSingleton<IEnvironmentVariablesService>(serviceProvider =>
-        {
-            var options = serviceProvider
-                      .GetRequiredService<IOptions<EnvironmentVariablesOptions>>()
-                      .Value;
-
-            return new EnvironmentVariablesService(
-                options.KnownVariables,
-                serviceProvider.GetService<ILogger>());
-        });
-
-        builder.Services.AddSingleton<MainWindowViewModel>();
-        builder.Services.AddSingleton<MainWindow>();
+                .BindConfiguration(EnvironmentVariablesOptions.SectionName)
+                .ValidateOnStart()
+                .Validate(ValidateEnvironmentVariables);
     }
 
     /// <summary>
@@ -65,7 +77,8 @@ public partial class App : Application
     /// </summary>
     /// <param name="options"></param>
     /// <returns></returns>
-    private static bool ValidateEnvironmentVariables(EnvironmentVariablesOptions options)
+    private static bool ValidateEnvironmentVariables(
+        EnvironmentVariablesOptions options)
     {
         var names = options.KnownVariables
             .Select(x => x.Name);
@@ -87,13 +100,20 @@ public partial class App : Application
     protected override async void OnStartup(
         StartupEventArgs e)
     {
-        await _host.StartAsync();
+        try
+        {
+            await _host.StartAsync();
 
-        var window = _host.Services.GetRequiredService<MainWindow>();
+            var window = _host.Services.GetRequiredService<MainWindow>();
 
-        window.Show();
+            window.Show();
 
-        base.OnStartup(e);
+            base.OnStartup(e);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Приложение завершилось с критической ошибкой");
+        }
     }
 
     protected override async void OnExit(

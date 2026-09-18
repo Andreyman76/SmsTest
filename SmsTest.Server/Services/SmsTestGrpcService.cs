@@ -6,7 +6,8 @@ using SmsTest.Domain.DTO;
 
 namespace SmsTest.Server.Services;
 
-internal class SmsTestGrpcService(ISmsTestService service)
+internal class SmsTestGrpcService(
+    ISmsTestService service)
     : SmsTestService.SmsTestServiceBase
 {
     public override async Task<GetMenuResponse> GetMenu(
