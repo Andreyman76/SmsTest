@@ -9,7 +9,8 @@ namespace SmsTest.Contracts;
 /// </summary>
 public static class GrpcMappingExtensions
 {
-    public static GetMenuResponse ToProto(this GetMenuResponseDto response)
+    public static GetMenuResponse ToProto(
+        this GetMenuResponseDto response)
     {
         var result = new GetMenuResponse
         {
@@ -23,7 +24,8 @@ public static class GrpcMappingExtensions
         return result;
     }
 
-    public static GetMenuResponseDto ToDto(this GetMenuResponse response)
+    public static GetMenuResponseDto ToDto(
+        this GetMenuResponse response)
     {
         return new GetMenuResponseDto(
             Success: response.Success,
@@ -32,7 +34,8 @@ public static class GrpcMappingExtensions
         );
     }
 
-    public static MenuItem ToProto(this MenuItemDto menuItem)
+    public static MenuItem ToProto(
+        this MenuItemDto menuItem)
     {
         var result = new MenuItem
         {
@@ -49,7 +52,8 @@ public static class GrpcMappingExtensions
         return result;
     }
 
-    public static MenuItemDto ToDto(this MenuItem item)
+    public static MenuItemDto ToDto(
+        this MenuItem item)
     {
         return new MenuItemDto(
             Id: item.Id,
@@ -62,7 +66,8 @@ public static class GrpcMappingExtensions
         );
     }
 
-    public static Order ToProto(this SendOrderRequestDto order)
+    public static Order ToProto(
+        this SendOrderRequestDto order)
     {
         var result = new Order
         {
@@ -75,7 +80,8 @@ public static class GrpcMappingExtensions
         return result;
     }
 
-    public static SendOrderRequestDto ToDto(this Order order)
+    public static SendOrderRequestDto ToDto(
+        this Order order)
     {
         return new SendOrderRequestDto(
             OrderId: Guid.Parse(order.Id),
@@ -83,7 +89,8 @@ public static class GrpcMappingExtensions
         );
     }
 
-    public static OrderItem ToProto(this OrderItemDto orderItem)
+    public static OrderItem ToProto(
+        this OrderItemDto orderItem)
     {
         return new OrderItem
         {
@@ -92,7 +99,8 @@ public static class GrpcMappingExtensions
         };
     }
 
-    public static OrderItemDto ToDto(this OrderItem item)
+    public static OrderItemDto ToDto(
+        this OrderItem item)
     {
         return new OrderItemDto(
             Id: item.Id,
@@ -100,7 +108,8 @@ public static class GrpcMappingExtensions
         );
     }
 
-    public static SendOrderResponse ToProto(this SendOrderResponseDto response)
+    public static SendOrderResponse ToProto(
+        this SendOrderResponseDto response)
     {
         return new SendOrderResponse
         {
@@ -109,7 +118,8 @@ public static class GrpcMappingExtensions
         };
     }
 
-    public static SendOrderResponseDto ToDto(this SendOrderResponse response)
+    public static SendOrderResponseDto ToDto(
+        this SendOrderResponse response)
     {
         return new SendOrderResponseDto(
             Success: response.Success,

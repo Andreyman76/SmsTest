@@ -100,30 +100,36 @@ public partial class App : Application
     protected override async void OnStartup(
         StartupEventArgs e)
     {
-        try
-        {
-            await _host.StartAsync();
+        await _host.StartAsync();
 
-            var window = _host.Services.GetRequiredService<MainWindow>();
+        var window = _host.Services.GetRequiredService<MainWindow>();
 
-            window.Show();
+        window.Show();
 
-            base.OnStartup(e);
-        }
-        catch (Exception ex)
-        {
-            Log.Fatal(ex, "Приложение завершилось с критической ошибкой");
-        }
+        base.OnStartup(e);
     }
 
     protected override async void OnExit(
         ExitEventArgs e)
     {
-        await _host.StopAsync();
-        await Log.CloseAndFlushAsync();
+        try
+        {
+            await _host.StopAsync();
+            await Log.CloseAndFlushAsync();
 
-        _host.Dispose();
+            base.OnExit(e);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(
+                ex,
+                "Приложение завершилось с критической ошибкой");
 
-        base.OnExit(e);
+            throw;
+        }
+        finally
+        {
+            _host.Dispose();
+        }
     }
 }

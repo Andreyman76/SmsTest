@@ -1,8 +1,8 @@
-﻿using SmsTest.ConsoleApp.DAL;
+﻿using SmsTest.Application;
+using SmsTest.Application.DTO;
+using SmsTest.ConsoleApp.DAL;
 using SmsTest.ConsoleApp.DAL.Entities;
 using SmsTest.ConsoleApp.Utilities;
-using SmsTest.Application;
-using SmsTest.Application.DTO;
 using System.Globalization;
 using System.Text;
 

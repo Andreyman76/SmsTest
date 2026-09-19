@@ -15,12 +15,11 @@ internal static class OrdersTextParser
     {
         var text = ordersText.Trim();
         var result = new List<UserInputOrderItem>();
-
         var i = 0;
 
         do
         {
-            var article = GetOrderParameterOrDefault(
+            var article = GetOrderParameter(
                 text,
                 i
             );
@@ -43,7 +42,7 @@ internal static class OrdersTextParser
 
             i++;
 
-            var quantity = GetOrderParameterOrDefault(
+            var quantity = GetOrderParameter(
                 text,
                 i
             );
@@ -66,7 +65,7 @@ internal static class OrdersTextParser
             if (i < text.Length
                 && text[i] != OrdersSeparator)
             {
-                throw new FormatException($"Строка заказов имеет неверный формат: ожидается `{OrdersSeparator}` перед следующим заказом");
+                throw new FormatException($"Строка заказов имеет неверный формат: ожидается `{OrdersSeparator}` перед следующей позицией заказа");
             }
 
             i++;
@@ -76,7 +75,7 @@ internal static class OrdersTextParser
         return result;
     }
 
-    private static ReadOnlySpan<char> GetOrderParameterOrDefault(
+    private static ReadOnlySpan<char> GetOrderParameter(
         ReadOnlySpan<char> ordersText,
         int fromPosition
         )

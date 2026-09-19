@@ -1,7 +1,7 @@
-﻿using SmsTest.Contracts;
-using SmsTest.Contracts.Http;
-using SmsTest.Application;
+﻿using SmsTest.Application;
 using SmsTest.Application.DTO;
+using SmsTest.Contracts;
+using SmsTest.Contracts.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 

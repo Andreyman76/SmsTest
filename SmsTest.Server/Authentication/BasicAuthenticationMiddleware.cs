@@ -16,10 +16,10 @@ internal class BasicAuthenticationMiddleware(
 {
     private readonly string _username = configuration["Authentication:Username"]
             ?? throw new InvalidOperationException(
-                "Authentication:Username is not configured.");
+                "Authentication:Username не задан");
     private readonly string _password = configuration["Authentication:Password"]
             ?? throw new InvalidOperationException(
-                "Authentication:Password is not configured.");
+                "Authentication:Password не задан");
 
     public async Task InvokeAsync(HttpContext context)
     {

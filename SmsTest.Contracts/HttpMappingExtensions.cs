@@ -1,5 +1,5 @@
-﻿using SmsTest.Contracts.Http;
-using SmsTest.Application.DTO;
+﻿using SmsTest.Application.DTO;
+using SmsTest.Contracts.Http;
 using System.Globalization;
 
 namespace SmsTest.Contracts;
@@ -10,21 +10,24 @@ namespace SmsTest.Contracts;
 /// </summary>
 public static class HttpMappingExtensions
 {
-    public static HttpGetMenuRequestDto ToHttpDto(this GetMenuRequestDto request)
+    public static HttpGetMenuRequestDto ToHttpDto(
+        this GetMenuRequestDto request)
     {
         return new HttpGetMenuRequestDto(
             WithPrice: request.WithPrice
         );
     }
 
-    public static GetMenuRequestDto ToDto(this HttpGetMenuRequestDto request)
+    public static GetMenuRequestDto ToDto(
+        this HttpGetMenuRequestDto request)
     {
         return new GetMenuRequestDto(
             WithPrice: request.WithPrice
         );
     }
 
-    public static HttpGetMenuResponseDto ToHttpDto(this GetMenuResponseDto response)
+    public static HttpGetMenuResponseDto ToHttpDto(
+        this GetMenuResponseDto response)
     {
         return new HttpGetMenuResponseDto(
             Command: SmsTestApiCommands.GetMenuCommand,
@@ -37,7 +40,8 @@ public static class HttpMappingExtensions
         );
     }
 
-    public static GetMenuResponseDto ToDto(this HttpGetMenuResponseDto response)
+    public static GetMenuResponseDto ToDto(
+        this HttpGetMenuResponseDto response)
     {
         var items = response.Data?.MenuItems
                 .Select(ToDto) ?? [];
@@ -49,7 +53,8 @@ public static class HttpMappingExtensions
         );
     }
 
-    public static HttpMenuItemDto ToHttpDto(this MenuItemDto item)
+    public static HttpMenuItemDto ToHttpDto(
+        this MenuItemDto item)
     {
         return new HttpMenuItemDto(
             Id: item.Id,
@@ -62,7 +67,8 @@ public static class HttpMappingExtensions
         );
     }
 
-    public static MenuItemDto ToDto(this HttpMenuItemDto item)
+    public static MenuItemDto ToDto(
+        this HttpMenuItemDto item)
     {
         return new MenuItemDto(
             Id: item.Id,
@@ -75,7 +81,8 @@ public static class HttpMappingExtensions
         );
     }
 
-    public static HttpSendOrderRequestDto ToHttpDto(this SendOrderRequestDto request)
+    public static HttpSendOrderRequestDto ToHttpDto(
+        this SendOrderRequestDto request)
     {
         return new HttpSendOrderRequestDto(
             OrderId: request.OrderId,
@@ -84,7 +91,8 @@ public static class HttpMappingExtensions
         );
     }
 
-    public static SendOrderRequestDto ToDto(this HttpSendOrderRequestDto order)
+    public static SendOrderRequestDto ToDto(
+        this HttpSendOrderRequestDto order)
     {
         return new SendOrderRequestDto(
             OrderId: order.OrderId,
@@ -93,7 +101,8 @@ public static class HttpMappingExtensions
         );
     }
 
-    public static HttpOrderItemDto ToHttpDto(this OrderItemDto request)
+    public static HttpOrderItemDto ToHttpDto(
+        this OrderItemDto request)
     {
         return new HttpOrderItemDto(
             Id: request.Id,
@@ -102,7 +111,8 @@ public static class HttpMappingExtensions
         );
     }
 
-    public static OrderItemDto ToDto(this HttpOrderItemDto item)
+    public static OrderItemDto ToDto(
+        this HttpOrderItemDto item)
     {
         return new OrderItemDto(
             Id: item.Id,
@@ -112,7 +122,8 @@ public static class HttpMappingExtensions
         );
     }
 
-    public static HttpSendOrderResponseDto ToHttpDto(this SendOrderResponseDto response)
+    public static HttpSendOrderResponseDto ToHttpDto(
+        this SendOrderResponseDto response)
     {
         return new HttpSendOrderResponseDto(
             Command: SmsTestApiCommands.SendOrderCommand,
@@ -121,7 +132,8 @@ public static class HttpMappingExtensions
         );
     }
 
-    public static SendOrderResponseDto ToDto(this HttpSendOrderResponseDto response)
+    public static SendOrderResponseDto ToDto(
+        this HttpSendOrderResponseDto response)
     {
         return new SendOrderResponseDto(
             Success: response.Success,
