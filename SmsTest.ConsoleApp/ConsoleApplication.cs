@@ -11,7 +11,7 @@ namespace SmsTest.ConsoleApp;
 internal class ConsoleApplication(
     ISmsTestServiceClient client,
     DishRepository repository,
-    LoggedConsole console)
+    IConsole console)
 {
     public async Task RunAsync(CancellationToken token)
     {

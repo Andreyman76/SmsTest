@@ -7,7 +7,7 @@ namespace SmsTest.ConsoleApp.Utilities;
 /// </summary>
 /// <param name="logger"></param>
 internal class LoggedConsole(
-    ILogger logger)
+    ILogger logger) : IConsole
 {
     public void WriteLine(string line)
     {

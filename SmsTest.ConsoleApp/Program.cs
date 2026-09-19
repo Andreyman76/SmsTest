@@ -55,7 +55,7 @@ internal class Program
 
         builder.Services
             .AddSerilog(Log.Logger)
-            .AddSingleton<LoggedConsole>()
+            .AddSingleton<IConsole, LoggedConsole>()
             .AddSmsTestServiceClient(builder.Configuration
                 .GetSection(ServerOptions.SectionName)
                 .Get<ServerOptions>() ?? throw new InvalidOperationException($"{nameof(ServerOptions)} не задан"))
