@@ -20,7 +20,7 @@ public partial class MainWindowViewModel
 
         Variables = new ObservableCollection<
             EnvironmentVariableViewModel>(
-                service.GetAllVariables()
+                service.LoadVariables()
                 .Select(CreateVariableViewModel)
             );
     }

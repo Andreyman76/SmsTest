@@ -9,8 +9,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\SmsTest.Application\SmsTest.Application.csproj" />
 		<ProjectReference Include="..\SmsTest.Contracts\SmsTest.Contracts.csproj" />
-		<ProjectReference Include="..\SmsTest.Domain\SmsTest.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

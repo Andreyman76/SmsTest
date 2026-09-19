@@ -1,8 +1,8 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Sms.Test;
 using SmsTest.Contracts;
-using SmsTest.Domain;
-using SmsTest.Domain.DTO;
+using SmsTest.Application;
+using SmsTest.Application.DTO;
 
 namespace SmsTest.Client;
 

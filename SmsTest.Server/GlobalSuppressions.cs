@@ -5,5 +5,5 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0305:Упростите инициализацию коллекции", Justification = "<Ожидание>", Scope = "member", Target = "~M:SmsTest.Server.Services.SmsTestServiceMockup.GetMenuAsync(SmsTest.Domain.DTO.GetMenuRequestDto,System.Threading.CancellationToken)~System.Threading.Tasks.Task{SmsTest.Domain.DTO.GetMenuResponseDto}")]
-[assembly: SuppressMessage("Style", "IDE0060:Удалите неиспользуемый параметр", Justification = "<Ожидание>", Scope = "member", Target = "~M:SmsTest.Server.Services.SmsTestServiceMockup.GetMenuAsync(SmsTest.Domain.DTO.GetMenuRequestDto,System.Threading.CancellationToken)~System.Threading.Tasks.Task{SmsTest.Domain.DTO.GetMenuResponseDto}")]
+[assembly: SuppressMessage("Style", "IDE0305:Упростите инициализацию коллекции", Justification = "<Ожидание>", Scope = "member", Target = "~M:SmsTest.Server.Services.InMemorySmsTestService.GetMenuAsync(SmsTest.Application.DTO.GetMenuRequestDto,System.Threading.CancellationToken)~System.Threading.Tasks.Task{SmsTest.Application.DTO.GetMenuResponseDto}")]
+[assembly: SuppressMessage("Style", "IDE0060:Удалите неиспользуемый параметр", Justification = "<Ожидание>", Scope = "member", Target = "~M:SmsTest.Server.Services.InMemorySmsTestService.GetMenuAsync(SmsTest.Application.DTO.GetMenuRequestDto,System.Threading.CancellationToken)~System.Threading.Tasks.Task{SmsTest.Application.DTO.GetMenuResponseDto}")]

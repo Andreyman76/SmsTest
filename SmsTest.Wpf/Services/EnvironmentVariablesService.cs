@@ -14,7 +14,7 @@ public class EnvironmentVariablesService(
 
     private const string DefaultVariableValue = "default";
 
-    public EnvironmentVariable[] GetAllVariables()
+    public EnvironmentVariable[] LoadVariables()
     {
         var result = new EnvironmentVariable[knownVariables.Count()];
         var i = 0;

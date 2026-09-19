@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 using Sms.Test;
 using SmsTest.Client;
-using SmsTest.Domain;
+using SmsTest.Application;
 using System.Net.Http.Headers;
 using System.Text;
 

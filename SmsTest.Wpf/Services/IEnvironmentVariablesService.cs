@@ -7,6 +7,6 @@ namespace SmsTest.Wpf.Services;
 /// </summary>
 public interface IEnvironmentVariablesService
 {
-    EnvironmentVariable[] GetAllVariables();
+    EnvironmentVariable[] LoadVariables();
     void SetVariable(string name, string value);
 }

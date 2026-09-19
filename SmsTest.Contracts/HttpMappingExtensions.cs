@@ -1,5 +1,5 @@
 ﻿using SmsTest.Contracts.Http;
-using SmsTest.Domain.DTO;
+using SmsTest.Application.DTO;
 using System.Globalization;
 
 namespace SmsTest.Contracts;

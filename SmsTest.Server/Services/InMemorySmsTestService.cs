@@ -1,11 +1,11 @@
-﻿using SmsTest.Domain.DTO;
+﻿using SmsTest.Application.DTO;
 
 namespace SmsTest.Server.Services;
 
 /// <summary>
 /// Тестовая реализация сервиса
 /// </summary>
-internal class SmsTestServiceMockup
+internal class InMemorySmsTestService
     : ISmsTestService
 {
     private readonly MenuItemDto[] _menu =

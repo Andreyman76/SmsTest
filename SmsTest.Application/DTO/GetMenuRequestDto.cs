@@ -1,4 +1,4 @@
-﻿namespace SmsTest.Domain.DTO;
+﻿namespace SmsTest.Application.DTO;
 
 public sealed record GetMenuRequestDto(
     bool WithPrice

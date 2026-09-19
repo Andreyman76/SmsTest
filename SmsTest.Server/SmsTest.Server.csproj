@@ -12,8 +12,8 @@
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore" Version="2.83.0" />
 		<PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.83.0" />
+		<ProjectReference Include="..\SmsTest.Application\SmsTest.Application.csproj" />
 		<ProjectReference Include="..\SmsTest.Contracts\SmsTest.Contracts.csproj" />
-		<ProjectReference Include="..\SmsTest.Domain\SmsTest.Domain.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

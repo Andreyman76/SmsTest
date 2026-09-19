@@ -5,7 +5,7 @@ using System.Text.Json;
 
 namespace SmsTest.Server.Services;
 
-internal class SmsTestHttpService(
+internal class SmsTestHttpHandler(
     ISmsTestService service)
 {
     public async Task<IResult> HandleAsync(

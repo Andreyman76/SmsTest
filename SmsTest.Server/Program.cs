@@ -26,7 +26,7 @@ internal class Program
 
         app.MapPost("/api", async (
             HttpRequest request,
-            SmsTestHttpService service,
+            SmsTestHttpHandler service,
             CancellationToken cancellationToken) =>
             {
                 return await service.HandleAsync(
@@ -48,8 +48,8 @@ internal class Program
     {
         builder.WebHost.UseKestrel();
         builder.Services
-            .AddSingleton<ISmsTestService, SmsTestServiceMockup>()
-            .AddSingleton<SmsTestHttpService>()
+            .AddSingleton<ISmsTestService, InMemorySmsTestService>()
+            .AddSingleton<SmsTestHttpHandler>()
             .AddGrpcReflection()
             .AddGrpc();
     }

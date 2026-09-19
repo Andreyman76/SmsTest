@@ -17,7 +17,7 @@ internal class DishRepository(
     /// <param name="dishes"></param>
     /// <param name="token"></param>
     /// <returns></returns>
-    public async Task ReplaceMenuAsync(
+    public async Task ReplaceDishesAsync(
         IEnumerable<Dish> dishes,
         CancellationToken token = default)
     {

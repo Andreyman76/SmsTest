@@ -6,7 +6,7 @@ namespace SmsTest.ConsoleApp.Utilities;
 /// Утилита, совмещающая в себе чтение/запись в консоль с ведением логов того, что было прочитано/записано
 /// </summary>
 /// <param name="logger"></param>
-internal class LoggedConsole(
+internal class LoggingConsole(
     ILogger logger) : IConsole
 {
     public void WriteLine(string line)

@@ -1,8 +1,8 @@
 ﻿using SmsTest.ConsoleApp.DAL;
 using SmsTest.ConsoleApp.DAL.Entities;
 using SmsTest.ConsoleApp.Utilities;
-using SmsTest.Domain;
-using SmsTest.Domain.DTO;
+using SmsTest.Application;
+using SmsTest.Application.DTO;
 using System.Globalization;
 using System.Text;
 
@@ -26,7 +26,7 @@ internal class ConsoleApplication(
                 throw new InvalidOperationException($"Сервер вернул ошибку на запрос получения меню: {getMenuResponse.ErrorMessage}");
             }
 
-            await repository.ReplaceMenuAsync(getMenuResponse.MenuItems.Select(x => new Dish
+            await repository.ReplaceDishesAsync(getMenuResponse.MenuItems.Select(x => new Dish
             {
                 Id = x.Id,
                 Name = x.Name,

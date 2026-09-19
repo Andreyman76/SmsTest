@@ -1,4 +1,4 @@
-﻿using SmsTest.Domain.DTO;
+﻿using SmsTest.Application.DTO;
 
 namespace SmsTest.Server.Services;
 

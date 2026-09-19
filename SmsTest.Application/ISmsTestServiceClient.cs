@@ -1,6 +1,6 @@
-﻿using SmsTest.Domain.DTO;
+﻿using SmsTest.Application.DTO;
 
-namespace SmsTest.Domain;
+namespace SmsTest.Application;
 
 public interface ISmsTestServiceClient
 {
