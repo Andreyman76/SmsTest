@@ -41,12 +41,25 @@
 
         </Style>
 
+        <!-- Ячейки -->
         <Style x:Key="DataGridCellStyle"
             TargetType="{x:Type DataGridCell}">
 
             <Setter Property="Height"
                 Value="32" />
 
+        </Style>
+
+        <!-- TextBlock -->
+        <Style x:Key="DataGridTextBlockStyle"
+            TargetType="TextBlock">
+            <Setter Property="Padding" Value="15,0"/>
+        </Style>
+        
+        <!-- TextBox -->
+        <Style x:Key="DataGridTextBoxStyle"
+            TargetType="TextBox">
+            <Setter Property="Padding" Value="15,0"/>
         </Style>
 
     </Window.Resources>
@@ -172,19 +185,22 @@
                                 Binding="{Binding Name}"
                                 Width="1*"
                                 IsReadOnly="True"
+                                ElementStyle="{StaticResource DataGridTextBlockStyle}"
                                 />
 
                             <!-- Значение -->
                             <DataGridTemplateColumn
                                 Header="Значение"
-                                Width="1*">
+                                Width="1*"
+                                >
 
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <TextBlock
                                             Text="{Binding Value}"
                                             VerticalAlignment="Center"
-                                            TextWrapping="NoWrap" />
+                                            TextWrapping="NoWrap"
+                                            Style="{StaticResource DataGridTextBlockStyle}"/>
                                     </DataTemplate>
 
                                 </DataGridTemplateColumn.CellTemplate>
@@ -194,6 +210,7 @@
                                         <TextBox
                                             Text="{Binding Value, UpdateSourceTrigger=LostFocus}"
                                             TextWrapping="NoWrap" 
+                                            Style="{StaticResource DataGridTextBoxStyle}"
                                             />
 
                                     </DataTemplate>
@@ -205,7 +222,8 @@
                                 Header="Комментарий"
                                 Width="1.5*"
                                 Binding="{Binding Comment}"
-                                IsReadOnly="True" />
+                                IsReadOnly="True"
+                                ElementStyle="{StaticResource DataGridTextBlockStyle}"/>
 
                         </DataGrid.Columns>
 
