@@ -13,7 +13,8 @@ internal class ConsoleApplication(
     DishRepository repository,
     IConsole console)
 {
-    public async Task RunAsync(CancellationToken token)
+    public async Task RunAsync(
+        CancellationToken token = default)
     {
         try
         {

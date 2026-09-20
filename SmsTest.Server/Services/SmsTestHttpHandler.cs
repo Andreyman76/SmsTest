@@ -48,7 +48,7 @@ internal class SmsTestHttpHandler(
 
     private async Task<IResult> GetMenuAsync(
         HttpRequestDto request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         var parameters = request.CommandParameters
             .Deserialize<HttpGetMenuRequestDto>();
@@ -71,7 +71,7 @@ internal class SmsTestHttpHandler(
 
     private async Task<IResult> SendOrderAsync(
         HttpRequestDto request,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
         var parameters = request.CommandParameters
             .Deserialize<HttpSendOrderRequestDto>();

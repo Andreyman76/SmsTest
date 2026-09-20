@@ -47,9 +47,9 @@ public static class HttpMappingExtensions
                 .Select(ToDto) ?? [];
 
         return new GetMenuResponseDto(
-            response.Success,
-            response.ErrorMessage,
-            [.. items]
+            Success: response.Success,
+            ErrorMessage: response.ErrorMessage,
+            MenuItems: [.. items]
         );
     }
 
