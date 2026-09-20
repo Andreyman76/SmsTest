@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SmsTest.Server.Authentication;
+using SmsTest.Server.Configuration;
 using SmsTest.Server.Services;
 
 namespace SmsTest.Server;
@@ -50,7 +51,19 @@ internal class Program
         builder.Services
             .AddSingleton<ISmsTestService, InMemorySmsTestService>()
             .AddSingleton<SmsTestHttpHandler>()
+            .AddOptions<AuthenticationOptions>()
+                .BindConfiguration(AuthenticationOptions.SectionName)
+                .ValidateOnStart()
+                .Validate(ValidateAuthenticationOptions);
+
+        builder.Services
             .AddGrpcReflection()
             .AddGrpc();
+    }
+
+    private static bool ValidateAuthenticationOptions(AuthenticationOptions options)
+    {
+        return !string.IsNullOrWhiteSpace(options.Username)
+            && !string.IsNullOrWhiteSpace(options.Password);
     }
 }

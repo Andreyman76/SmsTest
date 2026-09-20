@@ -58,7 +58,7 @@ internal class Program
             .AddSingleton<IConsole, LoggingConsole>()
             .AddSmsTestServiceClient(builder.Configuration
                 .GetSection(ServerOptions.SectionName)
-                .Get<ServerOptions>() ?? throw new InvalidOperationException($"{nameof(ServerOptions)} не задан"))
+                .Get<ServerOptions>() ?? throw new InvalidOperationException($"{ServerOptions.SectionName} не задан"))
             .AddSingleton<DishRepository>()
             .AddTransient<ConsoleApplication>()
             .AddDbContext<SmsTestDbContext>(options =>

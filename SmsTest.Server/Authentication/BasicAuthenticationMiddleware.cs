@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using SmsTest.Server.Configuration;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -12,15 +13,8 @@ namespace SmsTest.Server.Authentication;
 /// <param name="configuration"></param>
 internal class BasicAuthenticationMiddleware(
     RequestDelegate next,
-    IConfiguration configuration)
+    IOptions<AuthenticationOptions> options)
 {
-    private readonly string _username = configuration["Authentication:Username"]
-            ?? throw new InvalidOperationException(
-                "Authentication:Username не задан");
-    private readonly string _password = configuration["Authentication:Password"]
-            ?? throw new InvalidOperationException(
-                "Authentication:Password не задан");
-
     public async Task InvokeAsync(HttpContext context)
     {
         if (context.Request.Path != "/api")
@@ -29,7 +23,7 @@ internal class BasicAuthenticationMiddleware(
             return;
         }
 
-        if (!TryAuthenticate(context.Request, out _))
+        if (!TryAuthenticate(context.Request))
         {
             context.Response.StatusCode = StatusCodes.Status401Unauthorized;
             context.Response.Headers.WWWAuthenticate = "Basic";
@@ -41,11 +35,8 @@ internal class BasicAuthenticationMiddleware(
     }
 
     private bool TryAuthenticate(
-        HttpRequest request,
-        out string? username)
+        HttpRequest request)
     {
-        username = null;
-
         if (!request.Headers.TryGetValue(
                 "Authorization",
                 out var authorization))
@@ -92,18 +83,17 @@ internal class BasicAuthenticationMiddleware(
             return false;
         }
 
-        username = credentials[..separator];
-
+        var username = credentials[..separator];
         var password = credentials[(separator + 1)..];
 
         return string.Equals(
             username,
-            _username,
+            options.Value.Username,
             StringComparison.Ordinal)
             &&
         string.Equals(
             password,
-            _password,
+            options.Value.Password,
             StringComparison.Ordinal);
     }
 }
