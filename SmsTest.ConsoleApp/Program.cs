@@ -47,11 +47,9 @@ internal class Program
        HostApplicationBuilder builder)
     {
         Log.Logger = new LoggerConfiguration()
-                .ReadFrom.Configuration(
-                    new ConfigurationBuilder()
-                        .AddJsonFile("appsettings.json")
-                        .Build())
-                .CreateLogger();
+            .ReadFrom.Configuration(
+                builder.Configuration)
+            .CreateLogger();
 
         builder.Services
             .AddSerilog(Log.Logger)

@@ -46,9 +46,7 @@ public partial class App : Application
     {
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(
-                new ConfigurationBuilder()
-                    .AddJsonFile("appsettings.json")
-                    .Build())
+                builder.Configuration)
             .CreateLogger();
 
         builder.Services

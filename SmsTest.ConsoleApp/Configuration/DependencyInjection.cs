@@ -17,7 +17,7 @@ internal static class DependencyInjection
         {
             // Регистрация как typed client
             services.AddHttpClient<ISmsTestServiceClient, SmsTestHttpServiceClient>(
-                (serviceProvider, client) =>
+                (_, client) =>
                 {
                     client.BaseAddress = ValidateHttpServerOptions(serverOptions);
 
@@ -35,12 +35,8 @@ internal static class DependencyInjection
         else if (string.Equals(serverOptions.Protocol, "grpc", StringComparison.OrdinalIgnoreCase))
         {
             services.AddGrpcClient<SmsTestService.SmsTestServiceClient>(
-                (serviceProvider, options) =>
+                (_, options) =>
             {
-                var o = serviceProvider
-                        .GetRequiredService<IOptions<ServerOptions>>()
-                        .Value;
-
                 options.Address = ValidateGrpcServerOptions(serverOptions);
             });
 

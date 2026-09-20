@@ -83,8 +83,13 @@ public static class GrpcMappingExtensions
     public static SendOrderRequestDto ToDto(
         this Order order)
     {
+        if (!Guid.TryParse(order.Id, out var guid))
+        {
+            throw new FormatException($"Неверный формат идентификатора заказа: {order.Id}. Ожидается GUID");
+        }
+
         return new SendOrderRequestDto(
-            OrderId: Guid.Parse(order.Id),
+            OrderId: guid,
             OrderItems: [.. order.OrderItems.Select(ToDto)]
         );
     }
