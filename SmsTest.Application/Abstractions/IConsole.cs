@@ -1,6 +1,6 @@
-﻿namespace SmsTest.ConsoleApp;
+﻿namespace SmsTest.Application.Abstractions;
 
-internal interface IConsole
+public interface IConsole
 {
     public void WriteLine(string line);
     public string ReadLine();

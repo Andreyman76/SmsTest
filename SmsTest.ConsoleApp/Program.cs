@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using SmsTest.Application.Abstractions;
 using SmsTest.ConsoleApp.Configuration;
 using SmsTest.ConsoleApp.DAL;
 using SmsTest.ConsoleApp.Utilities;
@@ -57,7 +58,7 @@ internal class Program
             .AddSmsTestServiceClient(builder.Configuration
                 .GetSection(ServerOptions.SectionName)
                 .Get<ServerOptions>() ?? throw new InvalidOperationException($"{ServerOptions.SectionName} не задан"))
-            .AddSingleton<DishRepository>()
+            .AddSingleton<IDishRepository, DishRepository>()
             .AddTransient<ConsoleApplication>()
             .AddDbContext<SmsTestDbContext>(options =>
             {

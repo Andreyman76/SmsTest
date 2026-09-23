@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using SmsTest.Application.Abstractions;
 
 namespace SmsTest.ConsoleApp.Utilities;
 

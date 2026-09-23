@@ -1,6 +1,6 @@
-﻿namespace SmsTest.ConsoleApp.DAL.Entities;
+﻿namespace SmsTest.Application.Entities;
 
-internal sealed class Dish
+public sealed class Dish
 {
     public required string Id { get; set; }
     public required string Name { get; set; }

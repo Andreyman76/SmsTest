@@ -1,7 +1,6 @@
-﻿using SmsTest.Application;
+﻿using SmsTest.Application.Abstractions;
 using SmsTest.Application.DTO;
-using SmsTest.ConsoleApp.DAL;
-using SmsTest.ConsoleApp.DAL.Entities;
+using SmsTest.Application.Entities;
 using SmsTest.ConsoleApp.Utilities;
 using System.Globalization;
 using System.Text;
@@ -10,7 +9,7 @@ namespace SmsTest.ConsoleApp;
 
 internal class ConsoleApplication(
     ISmsTestServiceClient client,
-    DishRepository repository,
+    IDishRepository repository,
     IConsole console)
 {
     public async Task RunAsync(

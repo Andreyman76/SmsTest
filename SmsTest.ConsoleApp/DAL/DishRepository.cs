@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using SmsTest.ConsoleApp.DAL.Entities;
+using SmsTest.Application.Abstractions;
+using SmsTest.Application.Entities;
 
 namespace SmsTest.ConsoleApp.DAL;
 
@@ -9,7 +10,7 @@ namespace SmsTest.ConsoleApp.DAL;
 /// </summary>
 /// <param name="scopeFactory"></param>
 internal class DishRepository(
-    IServiceScopeFactory scopeFactory)
+    IServiceScopeFactory scopeFactory) : IDishRepository
 {
     /// <summary>
     /// Обновление меню на актуальное

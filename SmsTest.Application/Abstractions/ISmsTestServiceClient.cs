@@ -1,6 +1,6 @@
 ﻿using SmsTest.Application.DTO;
 
-namespace SmsTest.Application;
+namespace SmsTest.Application.Abstractions;
 
 public interface ISmsTestServiceClient
 {

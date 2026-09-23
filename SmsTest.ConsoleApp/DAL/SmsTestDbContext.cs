@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SmsTest.ConsoleApp.DAL.Entities;
+using SmsTest.Application.Entities;
 
 namespace SmsTest.ConsoleApp.DAL;
 

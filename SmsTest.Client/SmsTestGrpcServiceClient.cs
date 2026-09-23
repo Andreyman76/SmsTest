@@ -1,6 +1,6 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Sms.Test;
-using SmsTest.Application;
+using SmsTest.Application.Abstractions;
 using SmsTest.Application.DTO;
 using SmsTest.Contracts;
 

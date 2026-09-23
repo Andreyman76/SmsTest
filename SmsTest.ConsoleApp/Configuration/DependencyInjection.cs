@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Sms.Test;
-using SmsTest.Application;
+using SmsTest.Application.Abstractions;
 using SmsTest.Client;
 using System.Net.Http.Headers;
 using System.Text;
